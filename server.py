@@ -3,6 +3,7 @@ from psycopg2 import sql
 
 def get_connection():
     try:
+        
         connection = psycopg2.connect(
             dbname='postgres',
             user='postgres',
@@ -14,4 +15,5 @@ def get_connection():
     except psycopg2.Error as e:
         print(f"Ошибка подключения к базе данных: {e}")
         return None
+
 
