@@ -2,7 +2,6 @@ import psycopg2
 from psycopg2 import sql
 
 def get_connection():
-    """Создаёт подключение к базе данных."""
     try:
         connection = psycopg2.connect(
             dbname='postgres',
