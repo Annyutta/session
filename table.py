@@ -5,7 +5,6 @@ Base = declarative_base()
 
 class Gruppa(Base):
     __tablename__ = 'gruppa'
-
     id_gruppa = Column(Integer, primary_key=True, autoincrement=True)
     gruppa_code = Column(Integer)
     course = Column(Integer)
