@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, Boolean, Date, ForeignKey
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import relationship
+from sqlalchemy.dialects.postgresql import JSONB
 
 Base = declarative_base()
 
@@ -16,6 +17,7 @@ class SessionModel(Base):
 
     gruppa = relationship('Gruppa', back_populates="sessions")
     subject = relationship('Subject', back_populates="sessions")
+    json_data = Column(JSONB, nullable=True) 
 
 class Gruppa(Base):
     __tablename__ = 'gruppa'
