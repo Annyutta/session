@@ -12,7 +12,8 @@ from server import get_connection
 from models import Subject, SessionModel, Gruppa
 from typing import List
 from fastapi import HTTPException
-
+from fastapi import Query
+from sqlalchemy import func
 
 
 DATABASE_URL = "postgresql+psycopg2://postgres:anna2021@127.0.0.1:5432/postgres"
@@ -160,6 +161,23 @@ def get_sorted_sessions(sort_by: str = "session_date", asc: bool = True, db: Ses
     )
     return query.all()
 
+from fastapi import Query
+
+# полнотекстовый поиск по регулярному выражению
+@app.get("/search_sessions/")
+def search_sessions(query: str = Query(...), db: Session = Depends(get_db)):
+    """
+    Поиск сессий по регулярному выражению в JSON-поле.
+    """
+    results = db.execute(
+        """
+        SELECT * FROM sessions
+        WHERE json_data::text ~* :query
+        """,
+        {"query": query}
+    ).fetchall()
+
+    return [dict(result) for result in results]
 
 
 def main():
@@ -188,7 +206,9 @@ def main():
         print(f"Произошла ошибка: {e}")
 
     connection = get_connection()
-    populate_data(connection)
+    with SessionLocal() as db_session:
+        populate_data(db_session)  
+        print("Заполнение завершено.")
 
 
     # test_database() 
