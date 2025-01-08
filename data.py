@@ -40,17 +40,20 @@ def create_random_sessions(sessions: Session, n=10):
             teacher=random.choice(["Dr. Brown", "Prof. Smith", "Dr. Taylor"]),
             gruppa_id=random.choice(groups).id_gruppa,
             subject_id=random.choice(subjects).id_subject,
+            json_data={"notes": "This is a random note", "score": random.randint(50, 100)}  
         )
         sessions.add(new_session)
     sessions.commit()
 
-def populate_data(sessions: Session):
+
+def populate_data(db: Session):
     try:
-        create_random_groups(sessions)
-        create_random_subjects(sessions)
-        create_random_sessions(sessions)
+        create_random_groups(db)
+        create_random_subjects(db)
+        create_random_sessions(db)
+        print("Данные успешно добавлены.")
     except Exception as e:
         print(f"Ошибка при добавлении данных: {e}")
-        sessions.rollback()  
-    finally:
-        sessions.close()
+        db.rollback()
+
+
